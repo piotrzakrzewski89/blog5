@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ parent() }}
+	Rejestracja
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-10 col-md-10 mx-auto">
+				{% for message in app.flashes('success')%}
+					<div class='alert alert-success'>
+						{{ message }}
+					</div>
+				{% endfor %}
+
+				{% for message in app.flashes('error')%}
+					<div class='alert alert-danger'>
+						{{ message }}
+					</div>
+				{% endfor %}
+
+				<h1>Rejestracja</h1>
+				{% form_theme registrationForm 'bootstrap_4_layout.html.twig' %}
+				{{ form_start(registrationForm) }}
+				{{ form_row(registrationForm.username) }}
+				{{ form_row(registrationForm.email) }}
+				{{ form_row(registrationForm.plainPassword.first) }}
+				{{ form_row(registrationForm.plainPassword.second) }}
+				{{ form_row(registrationForm.agreeTerms) }}
+
+				<button type="submit" class="btn btn-lg btn-primary">Zarejestruj</button>
+				{{ form_end(registrationForm) }}
+                <br>
+                <a class="btn btn-lg btn-primary" href="{{ relative_path('/reset-password')}}">Resetowanie hasła</a>
+
+			</div>
+		</div>
+	</div>
+{% endblock %}

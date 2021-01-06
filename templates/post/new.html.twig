@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ parent() }}
+	Nowy Post
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-10 col-md-10 mx-auto">
+				{% form_theme postsForm 'bootstrap_4_layout.html.twig' %}
+				{{ form_start(postsForm) }}
+				{{ form_row(postsForm.title) }}
+				{{ form_row(postsForm.contents) }}
+				{{ form_end(postsForm) }}
+			</div>
+		</div>
+	</div>
+{% endblock %}

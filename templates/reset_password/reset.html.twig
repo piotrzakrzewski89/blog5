@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Resetowanie hasła
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-10 col-md-10 mx-auto">
+				<h1>Zresetuj swoje hasło</h1>
+
+				{% form_theme resetForm 'bootstrap_4_layout.html.twig' %}
+				{{ form_start(resetForm) }}
+				{{ form_row(resetForm.plainPassword) }}
+				<button class="btn btn-primary">Resetuj hasło</button>
+				{{ form_end(resetForm) }}
+			</div>
+		</div>
+	</div>
+{% endblock %}

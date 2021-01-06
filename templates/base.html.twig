@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>
+			{% block title %}Blog5
+			{% endblock %}
+		</title>
+		{% block stylesheets %}{% endblock %}
+
+		<!-- Bootstrap core CSS -->
+		<link
+		href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+
+		<!-- Custom fonts for this template -->
+		<link href="{{ asset('assets/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
+		<link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+		<link
+		href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+		<!-- Custom styles for this template -->
+		<link href="{{ asset('assets/css/clean-blog.min.css')}}" rel="stylesheet">
+
+	</head>
+
+	<body>
+		<!-- Navigation -->
+		<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+			<div class="container">
+				<a class="navbar-brand" href="{{ path('main')}}">Blog5</a>
+				<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+					Menu
+					<i class="fas fa-bars"></i>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarResponsive">
+					<ul class="navbar-nav ml-auto">
+						{% if app.user %}
+							<li class="nav-item">
+								<a class="nav-link" href="{{ path('index_post')}}">Lista postów</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="{{ path('add_new_post')}}">Dodaj nowy post</a>
+							</li>
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ app.user.username }}</a>
+								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+									<a class="dropdown-item" href="{{ path('user_panel')}}">Panel użytkownika</a>
+          							<a class="dropdown-item" href="{{ path('app_logout')}}">Wyloguj</a>
+        						</div>
+							</li>
+						{% else %}
+							<li class="nav-item">
+								<a class="nav-link" href="{{ path('app_login')}}">Logowanie</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="{{ path('app_register')}}">Rejestracja</a>
+							</li>
+						{% endif %}
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<!-- Page Header -->
+		<header class="masthead" style="background-image: url({{ asset('assets/img/home-bg.jpg')}})">
+			<div class="overlay"></div>
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-8 col-md-10 mx-auto">
+						<div class="site-heading">
+							<h1>Blog</h1>
+							<span class="subheading">wielotematyczny</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+		{% block body %}{% endblock %}
+		<!-- Footer -->
+		<footer>
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-8 col-md-10 mx-auto">
+						<p class="copyright text-muted">Copyright &copy; Blog5PiotrZakrzewski 2020</p>
+					</div>
+				</div>
+			</div>
+		</footer>
+		{% block javascripts %}
+
+
+			<!-- Bootstrap core JavaScript -->
+			<script src="{{ asset('assets/vendor/jquery/jquery.min.js')}}"></script>
+			<script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+
+			<!-- Custom scripts for this template -->
+			<script src="{{ asset('assets/js/clean-blog.min.js')}}"></script>
+
+			<script src="https://cdn.tiny.cloud/1/qoj0g1gtwwrui5rjqcrzv73ze1u3wy1l4rsrwojnyo4p9vfq/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+			
+			<script>
+				tinymce.init({
+
+selector: 'textarea',
+plugins: "safari,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,imagemanager,filemanager",
+language: "pl",
+imagetools_cors_hosts: ['picsum.photos'],
+menubar: 'file edit view insert format tools table help',
+toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
+toolbar_sticky: true,
+height: 600
+
+});
+			</script>
+
+
+		{% endblock %}
+	</body>
+
+</html>
+<!-- 
+
+					plugins: 'print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
+  imagetools_cors_hosts: ['picsum.photos'],
+  menubar: 'file edit view insert format tools table help',
+  toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
+  toolbar_sticky: true,
+  height: 600,
+  
+  mode:                              "exact",
+    elements:                          "%s",
+    theme:                             "%s",
+    plugins : "safari,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,imagemanager,filemanager",
+    language: "pl",
+    %s
+    %s
+    theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
+    theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
+    theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
+    theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,spellchecker,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,blockquote,pagebreak,|,insertfile,insertimage",
+    theme_advanced_toolbar_location:   "top",
+    theme_advanced_toolbar_align:      "left",
+    theme_advanced_statusbar_location: "bottom",
+    theme_advanced_resizing:           true
+    %s 
+	
+	 -->
