@@ -32,7 +32,7 @@ class ChangePasswordFormType extends AbstractType
                         new Regex([
                             'pattern' => '"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$"',
                             'message' => 'Twoje hasło powinno zawierać 1 cyfre, 1 duży znak oraz 1 znak specjalny',
-                        ]),                    
+                        ]),
                     ],
                     'label' => 'Nowe hasło',
                 ],
@@ -43,8 +43,7 @@ class ChangePasswordFormType extends AbstractType
                 // Instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

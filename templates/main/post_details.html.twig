@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ parent() }}
+	Post
+{% endblock %}
+
+{% block header %}
+
+	<header class="masthead" style="background-image: url({{ asset('download/')}}{{ post.userId.id }}/{{ post.photoPath }})">
+		<div class="overlay"></div>
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 col-md-10 mx-auto">
+					<div class="post-heading">
+						<h1>{{ post.title }}</h1>
+						<span class="meta">Zamieszczone przez
+							<a href="{{ path('user_posts', {'username' : post.userId.username }) }}">{{ post.userId.username }}</a>
+							{{ post.createdAt|date('d.m.Y H:i:s') }}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+{% endblock %}
+{% block body %}
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-10 col-md-10 mx-auto">
+				{% for message in app.flashes('success')%}
+					<div class='alert alert-success'>
+						{{ message }}
+					</div>
+				{% endfor %}
+
+				{% for message in app.flashes('error')%}
+					<div class='alert alert-danger'>
+						{{ message }}
+					</div>
+				{% endfor %}
+
+
+				<article>
+					<div class="container">
+						<div class="row">
+							<div class="col-lg-8 col-md-10 mx-auto">
+								{{ post.contents|raw }}
+							</div>
+						</div>
+					</div>
+				</article>
+			</div>
+		</div>
+	</div>
+{% endblock %}

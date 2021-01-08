@@ -13,6 +13,11 @@
 				{{ form_start(postsForm) }}
 				{{ form_row(postsForm.title) }}
 				{{ form_row(postsForm.contents) }}
+				{% if postsForm.photo_path.vars.data != NULL %}
+					<img style='width: 440px' src="{{ asset('download/')}}{{userId}}/{{ postsForm.photo_path.vars.data }}">
+				{% endif %}
+				{{ form_row(postsForm.photo_path) }}
+				{{ form_row(postsForm.submit) }}
 				{{ form_end(postsForm) }}
 			</div>
 		</div>

@@ -27,6 +27,8 @@
 		<!-- Custom styles for this template -->
 		<link href="{{ asset('assets/css/clean-blog.min.css')}}" rel="stylesheet">
 
+		<link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+
 	</head>
 
 	<body>
@@ -51,8 +53,8 @@
 								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ app.user.username }}</a>
 								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 									<a class="dropdown-item" href="{{ path('user_panel')}}">Panel użytkownika</a>
-          							<a class="dropdown-item" href="{{ path('app_logout')}}">Wyloguj</a>
-        						</div>
+									<a class="dropdown-item" href="{{ path('app_logout')}}">Wyloguj</a>
+								</div>
 							</li>
 						{% else %}
 							<li class="nav-item">
@@ -67,20 +69,22 @@
 			</div>
 		</nav>
 
-		<!-- Page Header -->
-		<header class="masthead" style="background-image: url({{ asset('assets/img/home-bg.jpg')}})">
-			<div class="overlay"></div>
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-8 col-md-10 mx-auto">
-						<div class="site-heading">
-							<h1>Blog</h1>
-							<span class="subheading">wielotematyczny</span>
+		{% block header %}
+			<!-- Page Header -->
+			<header class="masthead" style="background-image: url({{ asset('assets/img/home-bg.jpg')}})">
+				<div class="overlay"></div>
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-8 col-md-10 mx-auto">
+							<div class="site-heading">
+								<h1>Blog</h1>
+								<span class="subheading">wielotematyczny</span>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-		</header>
+			</header>
+		{% endblock %}
 		{% block body %}{% endblock %}
 		<!-- Footer -->
 		<footer>
@@ -98,12 +102,12 @@
 			<!-- Bootstrap core JavaScript -->
 			<script src="{{ asset('assets/vendor/jquery/jquery.min.js')}}"></script>
 			<script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-
+			<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 			<!-- Custom scripts for this template -->
 			<script src="{{ asset('assets/js/clean-blog.min.js')}}"></script>
 
 			<script src="https://cdn.tiny.cloud/1/qoj0g1gtwwrui5rjqcrzv73ze1u3wy1l4rsrwojnyo4p9vfq/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-			
+
 			<script>
 				tinymce.init({
 
@@ -118,8 +122,6 @@ height: 600
 
 });
 			</script>
-
-
 		{% endblock %}
 	</body>
 

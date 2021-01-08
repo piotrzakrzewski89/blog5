@@ -68,7 +68,9 @@ class AppAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
         }
 
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $credentials['username']]);
-
+        $user->setLastLogin(new \DateTime());
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
         if (!$user) {
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Username could not be found.');
