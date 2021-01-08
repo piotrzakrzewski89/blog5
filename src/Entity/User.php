@@ -60,20 +60,20 @@ class User implements UserInterface
     private $last_login;
 
     /**
-     * @ORM\OneToMany(targetEntity=Posts::class, mappedBy="user_id", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Posts::class, mappedBy="user", orphanRemoval=true)
      */
-    private $post_id;
+    private $posts;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="user_comments_id", orphanRemoval=true)
+     * @ORM\Column(type="boolean")
      */
-    private $user_id;
+    private $has_voted;
 
     public function __construct()
     {
-        $this->post_id = new ArrayCollection();
-        $this->user_id = new ArrayCollection();
+        $this->posts = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -199,59 +199,41 @@ class User implements UserInterface
     /**
      * @return Collection|Posts[]
      */
-    public function getPostId(): Collection
+    public function getPosts(): Collection
     {
-        return $this->post_id;
+        return $this->posts;
     }
 
-    public function addPostId(Posts $postId): self
+    public function addPost(Posts $post): self
     {
-        if (!$this->post_id->contains($postId)) {
-            $this->post_id[] = $postId;
-            $postId->setUserId($this);
+        if (!$this->posts->contains($post)) {
+            $this->posts[] = $post;
+            $post->setUser($this);
         }
 
         return $this;
     }
 
-    public function removePostId(Posts $postId): self
+    public function removePost(Posts $post): self
     {
-        if ($this->post_id->removeElement($postId)) {
+        if ($this->posts->removeElement($post)) {
             // set the owning side to null (unless already changed)
-            if ($postId->getUserId() === $this) {
-                $postId->setUserId(null);
+            if ($post->getUser() === $this) {
+                $post->setUser(null);
             }
         }
 
         return $this;
     }
 
-    /**
-     * @return Collection|Comments[]
-     */
-    public function getUserId(): Collection
+    public function getHasVoted(): ?bool
     {
-        return $this->user_id;
+        return $this->has_voted;
     }
 
-    public function addUserId(Comments $userId): self
+    public function setHasVoted(bool $has_voted): self
     {
-        if (!$this->user_id->contains($userId)) {
-            $this->user_id[] = $userId;
-            $userId->setUserCommentsId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUserId(Comments $userId): self
-    {
-        if ($this->user_id->removeElement($userId)) {
-            // set the owning side to null (unless already changed)
-            if ($userId->getUserCommentsId() === $this) {
-                $userId->setUserCommentsId(null);
-            }
-        }
+        $this->has_voted = $has_voted;
 
         return $this;
     }

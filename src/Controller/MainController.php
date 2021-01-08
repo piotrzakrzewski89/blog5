@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Posts;
 use App\Entity\User;
+use App\Entity\Ratings;
 
 class MainController extends AbstractController
 {
@@ -41,9 +42,11 @@ class MainController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
         $post = $em->getRepository(Posts::class)->findOneBY(['id' => $id]);
+        $ratingsData = $em->getRepository(Ratings::class)->findOneBY(['post' => $post]);
 
         return $this->render('main/post_details.html.twig', [
             'post' => $post,
+            'ratingsData' => $ratingsData
         ]);
     }
 
@@ -53,7 +56,7 @@ class MainController extends AbstractController
     public function userPostst($username)
     {
         $em = $this->getDoctrine()->getManager();
-        $userPosts = $em->getRepository(Posts::class)->findBY(['user_id' => $this->getUser()]);
+        $userPosts = $em->getRepository(Posts::class)->findBY(['user' => $this->getUser()]);
         $userData = $em->getRepository(User::class)->findOneBY(['id' => $this->getUser()]);
 
         return $this->render('main/user_posts.html.twig', [

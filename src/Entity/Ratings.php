@@ -27,6 +27,13 @@ class Ratings
      */
     private $negative;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Posts::class, inversedBy="ratings")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $post;
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -55,4 +62,17 @@ class Ratings
 
         return $this;
     }
+
+    public function getPost(): ?Posts
+    {
+        return $this->post;
+    }
+
+    public function setPost(?Posts $post): self
+    {
+        $this->post = $post;
+
+        return $this;
+    }
+
 }

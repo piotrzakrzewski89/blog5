@@ -7,7 +7,7 @@
 
 {% block header %}
 
-	<header class="masthead" style="background-image: url({{ asset('download/')}}{{ post.userId.id }}/{{ post.photoPath }})">
+	<header class="masthead" style="background-image: url({{ asset('download/')}}{{ post.user.id }}/{{ post.photoPath }})">
 		<div class="overlay"></div>
 		<div class="container">
 			<div class="row">
@@ -15,7 +15,7 @@
 					<div class="post-heading">
 						<h1>{{ post.title }}</h1>
 						<span class="meta">Zamieszczone przez
-							<a href="{{ path('user_posts', {'username' : post.userId.username }) }}">{{ post.userId.username }}</a>
+							<a href="{{ path('user_posts', {'username' : post.user.username }) }}">{{ post.user.username }}</a>
 							{{ post.createdAt|date('d.m.Y H:i:s') }}</span>
 					</div>
 				</div>
@@ -49,6 +49,27 @@
 						</div>
 					</div>
 				</article>
+				<hr>
+				<div class="post-preview text-center">
+					<h2>Oceny</h2>
+					{% for message in app.flashes('success_vote')%}
+						<div class='alert alert-success'>
+							{{ message }}
+						</div>
+					{% endfor %}
+
+					{% for message in app.flashes('error')%}
+						<div class='alert alert-danger'>
+							{{ message }}
+						</div>
+					{% endfor %}
+					<button style='color:green;font-size:40px' onclick="window.location.href='{{ path('post_vote' , { 'id': post.id , 'type' : 'p', 'value' : '1'}) }}'">{{ ratingsData.positive }}<img src="{{ asset('assets/vendor/jumpicon/iconfinder-thumb-up.png')}}"></button>
+					<button style='color:red;font-size:40px' onclick="window.location.href='{{ path('post_vote' , { 'id': post.id , 'type' : 'n', 'value' : '1'}) }}'">{{ ratingsData.negative }}<img src="{{ asset('assets/vendor/jumpicon/iconfinder-thumb-down.png')}}"></button>
+				</div>
+				<hr>
+				<div class="post-preview text-center">
+					<h2>Komentarze</h2>
+				</div>
 			</div>
 		</div>
 	</div>

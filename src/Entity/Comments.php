@@ -24,6 +24,11 @@ class Comments
      */
     private $contents;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Posts::class, inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $post;
 
     public function getId(): ?int
     {
@@ -38,6 +43,18 @@ class Comments
     public function setContents(string $contents): self
     {
         $this->contents = $contents;
+
+        return $this;
+    }
+
+    public function getPost(): ?Posts
+    {
+        return $this->post;
+    }
+
+    public function setPost(?Posts $post): self
+    {
+        $this->post = $post;
 
         return $this;
     }

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Posts;
+use App\Entity\Ratings;
 use App\Form\PostsType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,10 +22,11 @@ class PostController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $em = $this->getDoctrine()->getManager();
-        $postsData = $em->getRepository(Posts::class)->findBY(['user_id' => $this->getUser()]);
+        $postsData = $em->getRepository(Posts::class)->findBY(['user' => $this->getUser()]);
 
         return $this->render('post/index.html.twig', [
             'postsData' => $postsData,
+
         ]);
     }
 
@@ -38,6 +40,7 @@ class PostController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $newPosts = new Posts();
+        $newRatings = new Ratings();
         $form = $this->createForm(PostsType::class, $newPosts);
 
         $form->handleRequest($request);
@@ -51,9 +54,13 @@ class PostController extends AbstractController
                     $catalogPath = 'download/' . $this->getUser()->getId() . '/';
                     $newFileNamePhoto = $imageUploadService->uploadNewImage($newFileNamePhoto, $catalogPath);
                     $newPosts->setPhotoPath($newFileNamePhoto);
-                    $newPosts->setUserId($this->getUser());
+                    $newPosts->setUser($this->getUser());
                     $newPosts->setIsPublic(0);
                     $newPosts->setCreatedAt(new \DateTime());
+                    $newRatings->setPositive(0);
+                    $newRatings->setNegative(0);
+                    $newRatings->setPost($newPosts);
+                    $em->persist($newRatings);
                     $em->persist($newPosts);
                     $em->flush();
                     $this->addFlash('success', 'Dodano Post');
@@ -149,5 +156,27 @@ class PostController extends AbstractController
             $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
         }
         return $this->redirectToRoute('index_post');
+    }
+
+    /**
+     * @Route("/post/vote/{id}{type}{value}", name="post_vote")
+     */
+    public function vote($id, $type, $value)
+    {
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $rating = $em->getRepository(Ratings::class)->findOneBy(['post' => $id]);
+            if ($type == 'p') {
+                $rating->setPositive($rating->getPositive() + $value);
+            } elseif ($type == 'n') {
+                $rating->setNegative($rating->getNegative() + $value);
+            }
+            $em->persist($rating);
+            $em->flush();
+            $this->addFlash('success_vote', 'Zagłosowano');
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
+        }
+        return $this->redirectToRoute('post_details', ['id' => $id]);
     }
 }
