@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Posts;
+use App\Entity\User;
 use App\Entity\Ratings;
 use App\Form\PostsType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -166,14 +167,21 @@ class PostController extends AbstractController
         try {
             $em = $this->getDoctrine()->getManager();
             $rating = $em->getRepository(Ratings::class)->findOneBy(['post' => $id]);
+            $user = $em->getRepository(User::class)->findOneBy(['id' =>  $this->getUser()]);
             if ($type == 'p') {
                 $rating->setPositive($rating->getPositive() + $value);
             } elseif ($type == 'n') {
                 $rating->setNegative($rating->getNegative() + $value);
             }
-            $em->persist($rating);
-            $em->flush();
-            $this->addFlash('success_vote', 'Zagłosowano');
+            if ($user->getHasVoted() == true) {
+                $this->addFlash('error', 'Zagłosowano już');
+            } else {
+                $user->setHasVoted(true);
+                $em->persist($user);
+                $em->persist($rating);
+                $em->flush();
+                $this->addFlash('success_vote', 'Zagłosowano');
+            }
         } catch (\Exception $e) {
             $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
         }

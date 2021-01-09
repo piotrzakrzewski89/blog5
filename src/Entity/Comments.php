@@ -30,6 +30,11 @@ class Comments
      */
     private $post;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $posted_at;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -55,6 +60,18 @@ class Comments
     public function setPost(?Posts $post): self
     {
         $this->post = $post;
+
+        return $this;
+    }
+
+    public function getPostedAt(): ?\DateTimeInterface
+    {
+        return $this->posted_at;
+    }
+
+    public function setPostedAt(\DateTimeInterface $posted_at): self
+    {
+        $this->posted_at = $posted_at;
 
         return $this;
     }

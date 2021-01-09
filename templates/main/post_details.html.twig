@@ -69,6 +69,29 @@
 				<hr>
 				<div class="post-preview text-center">
 					<h2>Komentarze</h2>
+					{% for message in app.flashes('success_comments')%}
+						<div class='alert alert-success'>
+							{{ message }}
+						</div>
+					{% endfor %}
+
+					{% for message in app.flashes('error')%}
+						<div class='alert alert-danger'>
+							{{ message }}
+						</div>
+					{% endfor %}
+					{% for comment in commentsData %}
+						<div class="post-preview">
+						{{ comment.contents|raw }}
+						Dodane przez kogos , {{ comment.postedAt|date('d.m.Y H:i:s') }}
+						</div>
+						<hr>
+					{% endfor %}
+					{% form_theme commentForm 'bootstrap_4_layout.html.twig' %}
+					{{ form_start(commentForm) }}
+					{{ form_row(commentForm.contents) }}
+					{{ form_row(commentForm.submit) }}
+					{{ form_end(commentForm) }}
 				</div>
 			</div>
 		</div>
