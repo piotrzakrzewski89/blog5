@@ -10,6 +10,7 @@ use App\Entity\Posts;
 use App\Entity\User;
 use App\Entity\Ratings;
 use App\Form\CommentsType;
+use App\Service\SendEmialToUserService;
 
 class MainController extends AbstractController
 {
@@ -59,7 +60,7 @@ class MainController extends AbstractController
                 $newComment->setPost($post);
                 $em->persist($newComment);
                 $em->flush();
-                $this->addFlash('success_comments', 'Dodano komentarz');
+                $this->addFlash('success', 'Dodano komentarz');
             } catch (\Exception $e) {
                 $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
             }
@@ -80,13 +81,28 @@ class MainController extends AbstractController
      */
     public function userPosts($username)
     {
-        $em = $this->getDoctrine()->getManager();
-        $userPosts = $em->getRepository(Posts::class)->findBY(['user' => $this->getUser()]);
-        $userData = $em->getRepository(User::class)->findOneBY(['id' => $this->getUser()]);
+        $em = $this->getDoctrine()->getManager();        
+        $userData = $em->getRepository(User::class)->findOneBY(['username' => $username]);
+        $userPosts = $em->getRepository(Posts::class)->findBY(['user' => $userData->getId()]);
 
         return $this->render('main/user_posts.html.twig', [
             'userPosts' => $userPosts,
             'userData' => $userData,
         ]);
+    }
+
+    /**
+     * @Route("/user_panel/send_email/{user}", name="app_send_mail_to_user") 
+     */
+    public function sendEmailToUser($user, SendEmialToUserService $SendEmialToUserService)
+    {
+        $em = $this->getDoctrine()->getManager();
+        try {
+            $SendEmialToUserService->sendMailToUser($user, $em);
+            $this->addFlash('success', 'Wysłano ponownie link aktywacyjny');
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
+        }
+        return $this->redirectToRoute('user_panel');
     }
 }

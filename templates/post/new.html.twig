@@ -6,19 +6,29 @@
 {% endblock %}
 
 {% block body %}
+
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-10 col-md-10 mx-auto">
-				{% form_theme postsForm 'bootstrap_4_layout.html.twig' %}
-				{{ form_start(postsForm) }}
-				{{ form_row(postsForm.title) }}
-				{{ form_row(postsForm.contents) }}
-				{% if postsForm.photo_path.vars.data != NULL %}
-					<img style='width: 440px' src="{{ asset('download/')}}{{userId}}/{{ postsForm.photo_path.vars.data }}">
+				{% if app.user.isVerified == false %}
+					<div class='alert alert-danger'>Uwaga ! Twoje konto nie zostało zweryfikowane, nie masz dostępu do tej funkcjonalności serwisu.</div>
+				{% else %}
+
+					{% form_theme postsForm 'bootstrap_4_layout.html.twig' %}
+					{{ form_start(postsForm) }}
+					{{ form_row(postsForm.title) }}
+					{{ form_row(postsForm.contents) }}
+					{% if postsForm.photo_path.vars.data != NULL %}
+						<img style='width: 440px' src="{{ asset('download/')}}{{userId}}/{{ postsForm.photo_path.vars.data }}">
+					{% endif %}
+					{{ form_row(postsForm.photo_path) }}
+					{% if app.user.isVerified == true %}
+						{{ form_row(postsForm.submit) }}
+					{% else %}
+						<a href="#" class="btn-primary btn">Zapisz</a>
+					{% endif %}
+					{{ form_end(postsForm) }}
 				{% endif %}
-				{{ form_row(postsForm.photo_path) }}
-				{{ form_row(postsForm.submit) }}
-				{{ form_end(postsForm) }}
 			</div>
 		</div>
 	</div>

@@ -15,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use App\Service\SendEmialToUserService;
 
 class RegistrationController extends AbstractController
 {
@@ -28,7 +29,7 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/register", name="app_register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, AppAuthenticator $authenticator): Response
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, AppAuthenticator $authenticator, SendEmialToUserService $SendEmialToUserService): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -50,15 +51,7 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
 
             // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation(
-                'app_verify_email',
-                $user,
-                (new TemplatedEmail())
-                    ->from(new Address('piotrzakrzewski@piotrzakrzewski89.pl', 'Piotr Zakrzewski'))
-                    ->to($user->getEmail())
-                    ->subject('Weryfikacja Emaila oraz aktywacja konta Blog5')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
-            );
+            $SendEmialToUserService->sendMailToUser($user,$entityManager );
             // do anything else you need here, like send an email
 
             $this->addFlash('success', 'Rejestracja powiodła się, aktywuj konto poprzez link aktywacyjny wysłany e-mailem. Potwierdzenie adresu wiąże się z uaktywnieniem konta.');

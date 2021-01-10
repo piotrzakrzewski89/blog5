@@ -180,7 +180,7 @@ class PostController extends AbstractController
                 $em->persist($user);
                 $em->persist($rating);
                 $em->flush();
-                $this->addFlash('success_vote', 'Zagłosowano');
+                $this->addFlash('success', 'Zagłosowano');
             }
         } catch (\Exception $e) {
             $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');

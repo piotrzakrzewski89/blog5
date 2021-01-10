@@ -1,0 +1,36 @@
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+	<div class="container">
+		<a class="navbar-brand" href="{{ path('main')}}">Blog5</a>
+		<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+			Menu
+			<i class="fas fa-bars"></i>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarResponsive">
+			<ul class="navbar-nav ml-auto">
+				{% if app.user %}
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('index_post')}}">Lista postów</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('add_new_post')}}">Dodaj nowy post</a>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ app.user.username }}</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+							<a class="dropdown-item" href="{{ path('user_panel')}}">Panel użytkownika</a>
+							<a class="dropdown-item" href="{{ path('app_logout')}}">Wyloguj</a>
+						</div>
+					</li>
+				{% else %}
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('app_login')}}">Logowanie</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('app_register')}}">Rejestracja</a>
+					</li>
+				{% endif %}
+			</ul>
+		</div>
+	</div>
+</nav>

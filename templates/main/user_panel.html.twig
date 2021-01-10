@@ -9,17 +9,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-10 col-md-10 mx-auto">
-				{% for message in app.flashes('success')%}
-					<div class='alert alert-success'>
-						{{ message }}
-					</div>
-				{% endfor %}
-
-				{% for message in app.flashes('error')%}
-					<div class='alert alert-danger'>
-						{{ message }}
-					</div>
-				{% endfor %}
+				{% include 'inc/flash_messeges.html.twig' %}
 
 				{% if app.user.isVerified == false %}
 					<div class='alert alert-danger'>Uwaga ! Twoje konto nie zostało zweryfikowane, nie będziesz miał dostępu do funkcjonalności serwisu.</div>
@@ -27,6 +17,10 @@
 				<h1>Panel Użytkownika
 				</h1>
 				<a class="btn btn-lg btn-primary" href="{{ relative_path('/reset-password')}}">Zmiana hasła</a>
+				<br><br>
+				{% if app.user.isVerified == false %}
+					<a class="btn btn-lg btn-primary" href="{{ path('app_send_mail_to_user', {'user' : app.user.id }) }}">Wyślij ponownie link aktywacyjny</a>
+				{% endif %}
 			</div>
 		</div>
 	</div>
