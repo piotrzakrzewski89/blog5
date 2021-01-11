@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ parent() }}
+	Formularz Kontaktowy
+{% endblock %}
+
+{% block body %}
+	<h1>Formularz Kontaktowy</h1>
+	{% form_theme contactForm 'bootstrap_4_layout.html.twig' %}
+	{{ form_start(contactForm) }}
+	{{ form_row(contactForm.name) }}
+	{{ form_row(contactForm.email) }}
+	{{ form_row(contactForm.subject) }}
+	{{ form_row(contactForm.body) }}
+	{{ form_row(contactForm.submit) }}
+	{{ form_end(contactForm) }}
+{% endblock %}

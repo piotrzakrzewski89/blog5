@@ -34,8 +34,16 @@
 		{% block header %}
 			{% include 'inc/header.html.twig' %}
 		{% endblock %}
-		{% block body %}{% endblock %}
-		{% include 'inc/footer.html.twig' %}}
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 col-md-10 mx-auto">
+					{% include 'inc/flash_messeges.html.twig' %}
+					{% block body %}{% endblock %}
+				</div>
+			</div>
+		</div>
+		{% include 'inc/modal.html.twig' %}
+		{% include 'inc/footer.html.twig' %}
 		{% block javascripts %}
 			<!-- Bootstrap core JavaScript -->
 			<script src="{{ asset('assets/vendor/jquery/jquery.min.js')}}"></script>
@@ -73,29 +81,21 @@ $('#myInput').trigger('focus')
 
 </html>
 <!-- 
-
-					plugins: 'print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
-  imagetools_cors_hosts: ['picsum.photos'],
-  menubar: 'file edit view insert format tools table help',
-  toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
-  toolbar_sticky: true,
-  height: 600,
-  
-  mode:                              "exact",
-    elements:                          "%s",
-    theme:                             "%s",
-    plugins : "safari,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,imagemanager,filemanager",
-    language: "pl",
-    %s
-    %s
-    theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
-    theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
-    theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
-    theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,spellchecker,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,blockquote,pagebreak,|,insertfile,insertimage",
-    theme_advanced_toolbar_location:   "top",
-    theme_advanced_toolbar_align:      "left",
-    theme_advanced_statusbar_location: "bottom",
-    theme_advanced_resizing:           true
-    %s 
 	
-	 -->
+					
+				<script>
+					tinymce.init({
+	
+	selector: 'textarea',
+	plugins: "safari,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,imagemanager,filemanager",
+	language: "pl",
+	imagetools_cors_hosts: ['picsum.photos'],
+	menubar: 'file edit view insert format tools table help',
+	toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
+	toolbar_sticky: true,
+	height: 600
+	
+	});
+				</script>
+		
+		 -->

@@ -2,34 +2,30 @@
 
 {% block title %}
 	{{ parent() }}
+	Strona główna
 {% endblock %}
 
 {% block body %}
-
-
 	<!-- Main Content -->
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-8 col-md-10 mx-auto">
-				{% for post in postsData %}
-					<div class="post-preview">
-						<a href="{{ path('post_details', {'id' : post.id }) }}">
-							<h2 class="post-title">
-								{{ post.title}}
-							</h2>
-							<h3 class="post-subtitle">
-								{{ post.contents|striptags |length > 50 ? post.contents|striptags |slice(0, 50)  ~ '...' : post.contents|striptags }}
-							</h3>
-						</a>
-						<p class="post-meta">Zamieszczone przez
-							<a href="{{ path('user_posts', {'username' : post.user.username }) }}">{{ post.user.username }}</a>
-							{{ post.createdAt|date('d.m.Y H:i:s') }}
-						</p>
-					</div>
-					<hr>
-				{% endfor %}
-			</div>
+	{% for post in postsData %}
+		<div class="post-preview">
+			<a href="{{ path('post_details', {'id' : post.id }) }}">
+				<h2 class="post-title">
+					{{ post.title}}
+				</h2>
+				<h3 class="post-subtitle">
+					{{ post.contents|striptags |length > 50 ? post.contents|striptags |slice(0, 50)  ~ '...' : post.contents|striptags }}
+				</h3>
+			</a>
+			<p class="post-meta">Zamieszczone przez
+				<a href="{{ path('user_posts', {'username' : post.user.username }) }}">{{ post.user.username }}</a>
+				,
+				{{ post.createdAt|date('d.m.Y H:i:s') }}<br>
+				Komentarze:
+				{{ post.comments|length }}
+			</p>
 		</div>
-	</div>
+		<hr>
+	{% endfor %}
 	<hr>
 {% endblock %}

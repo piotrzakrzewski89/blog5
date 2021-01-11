@@ -14,7 +14,7 @@ use App\Service\ImagesUploadService;
 class PostController extends AbstractController
 {
     /**
-     * @Route("/post", name="index_post")
+     * @Route("/post", name="user_posts_auth")
      */
     public function index()
     {
@@ -23,7 +23,7 @@ class PostController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $postsData = $em->getRepository(Posts::class)->findBY(['user' => $this->getUser()]);
 
-        return $this->render('post/index.html.twig', [
+        return $this->render('post/user_posts_auth.html.twig', [
             'postsData' => $postsData,
 
         ]);
@@ -106,7 +106,7 @@ class PostController extends AbstractController
                 $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
             }
 
-            return $this->redirectToRoute('index_post');
+            return $this->redirectToRoute('user_posts_auth');
         }
         return $this->render('post/new.html.twig', [
             'postsForm' => $form->createView(),

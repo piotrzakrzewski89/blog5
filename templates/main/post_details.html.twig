@@ -24,49 +24,44 @@
 	</header>
 {% endblock %}
 {% block body %}
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-10 col-md-10 mx-auto">
-				{% include 'inc/flash_messeges.html.twig' %}
-				<article>
-					<div class="container">
-						<div class="row">
-							<div class="col-lg-8 col-md-10 mx-auto">
-								{{ post.contents|raw }}
-							</div>
-						</div>
-					</div>
-				</article>
-				<hr>
-				{% if app.user.isVerified == false %}
-					<div class='alert alert-danger'>Uwaga ! Twoje konto nie zostało zweryfikowane, nie masz dostępu do tej funkcjonalności serwisu.</div>
-				{% else %}
-					<div class="post-preview text-center">
-						<h2>Oceny</h2>
-						<button style='color:green;font-size:40px' onclick="window.location.href='{{ path('post_vote' , { 'id': post.id , 'type' : 'p', 'value' : '1'}) }}'">{{ ratingsData.positive }}<img src="{{ asset('assets/vendor/jumpicon/iconfinder-thumb-up.png')}}"></button>
-						<button style='color:red;font-size:40px' onclick="window.location.href='{{ path('post_vote' , { 'id': post.id , 'type' : 'n', 'value' : '1'}) }}'">{{ ratingsData.negative }}<img src="{{ asset('assets/vendor/jumpicon/iconfinder-thumb-down.png')}}"></button>
-					</div>
-					<hr>
-					<div class="post-preview text-center">
-						<h2>Komentarze</h2>
-						{% for comment in commentsData %}
-							<div class="post-preview">
-								{{ comment.contents|raw }}
-								Dodane przez
-								{{ comment.user.username }}
-								,
-								{{ comment.postedAt|date('d.m.Y H:i:s') }}
-							</div>
-							<hr>
-						{% endfor %}
-						{% form_theme commentForm 'bootstrap_4_layout.html.twig' %}
-						{{ form_start(commentForm) }}
-						{{ form_row(commentForm.contents) }}
-						{{ form_row(commentForm.submit) }}
-						{{ form_end(commentForm) }}
-					{% endif %}
+	<article>
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 col-md-10 mx-auto">
+					{{ post.contents|raw }}
 				</div>
 			</div>
 		</div>
+	</article>
+	<hr>
+	{% if not app.user %}
+		<div class='alert alert-danger'>Uwaga ! Funkcjonalność serwisu dostępna tylko dla zalogowanych użytkowników.</div>
+	{% elseif app.user.isVerified == false %}
+		<div class='alert alert-danger'>Uwaga ! Twoje konto nie zostało zweryfikowane, nie masz dostępu do tej funkcjonalności serwisu.</div>
+	{% else %}
+		<div class="post-preview text-center">
+			<h2>Oceny</h2>
+			<button style='color:green;font-size:40px' onclick="window.location.href='{{ path('post_vote' , { 'id': post.id , 'type' : 'p', 'value' : '1'}) }}'">{{ ratingsData.positive }}<img src="{{ asset('assets/vendor/jumpicon/iconfinder-thumb-up.png')}}"></button>
+			<button style='color:red;font-size:40px' onclick="window.location.href='{{ path('post_vote' , { 'id': post.id , 'type' : 'n', 'value' : '1'}) }}'">{{ ratingsData.negative }}<img src="{{ asset('assets/vendor/jumpicon/iconfinder-thumb-down.png')}}"></button>
+		</div>
+		<hr>
+		<div class="post-preview text-center">
+			<h2>Komentarze</h2>
+			{% for comment in commentsData %}
+				<div class="post-preview">
+					{{ comment.contents|raw }}
+					Dodane przez
+					<a href="{{ path('user_comments', {'username' : comment.user.username }) }}">{{ comment.user.username }}</a>
+					,
+					{{ comment.postedAt|date('d.m.Y H:i:s') }}
+				</div>
+				<hr>
+			{% endfor %}
+			{% form_theme commentForm 'bootstrap_4_layout.html.twig' %}
+			{{ form_start(commentForm) }}
+			{{ form_row(commentForm.contents) }}
+			{{ form_row(commentForm.submit) }}
+			{{ form_end(commentForm) }}
+		{% endif %}
 	</div>
 {% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ parent() }}
+	Edycja Komentarza
+{% endblock %}
+
+{% block body %}
+
+	<h1>Edycja komentarza z posta:
+	</h1>
+	{% form_theme commentForm 'bootstrap_4_layout.html.twig' %}
+	{{ form_start(commentForm) }}
+	{{ form_row(commentForm.contents) }}
+	{{ form_row(commentForm.submit) }}
+	{{ form_end(commentForm) }}
+{% endblock %}

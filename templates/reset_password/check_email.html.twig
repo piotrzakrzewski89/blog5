@@ -1,17 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Password Reset Email Sent
+{% block title %}Resetowanie hasła
 {% endblock %}
 
 {% block body %}
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-10 col-md-10 mx-auto">
-				<p>Wiadomość z linkiem do resetowania hasła została wysłana, dzięki któremu możesz przejść proces resetowania hasła.
-				</p>
-				<p>Jeśli nie otrzymałeś wiadomości sprawdź spam lub
-					<a href="{{ path('app_forgot_password_request') }}">spróbuj ponownie</a>.</p>
-			</div>
-		</div>
-	</div>
+	<p>Wiadomość z linkiem do resetowania hasła została wysłana, dzięki któremu możesz przejść proces resetowania hasła.
+	</p>
+	<p>Jeśli nie otrzymałeś wiadomości sprawdź spam lub
+		<a href="{{ path('app_forgot_password_request') }}">spróbuj ponownie</a>.</p>
 {% endblock %}

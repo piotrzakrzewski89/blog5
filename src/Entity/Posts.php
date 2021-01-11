@@ -49,7 +49,7 @@ class Posts
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\File(
-     *     maxSize = "1024k",
+     *     maxSize = "2048k",
      *     mimeTypes = {"image/jpeg"},
      *     mimeTypesMessage = "Proszę załaduj plik w formacje JPEG"
      * )

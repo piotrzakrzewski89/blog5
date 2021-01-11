@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ parent() }}
+{% endblock %}
+
+{% block body %}
+{% if app.request.attributes.get('_route') == 'user_comments_auth' %}
+<a class="btn btn-lg btn-primary" href="{{ path('user_posts_auth') }}">Lista Twoich postów</a><br><br>
+{% endif %}
+<h1>Lista komentarzy</h1>
+<table class="table">
+	<thead>
+		<tr>
+			<th scope="col">#</th>
+			<th scope="col">tytuł posta</th>
+			<th scope="col">komentarz</th>
+			<th scope="col">data</th>
+			<th style='width: 20px'></th>
+			<th style='width: 20px'></th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for comment in commentsData %}
+			<tr>
+				<td>{{ loop.index }}</td>
+				<td>
+					<a href="{{ path('post_details', {'id' : comment.post.id }) }}">{{ comment.post.title }}<a/></td>
+				</td>
+				<td>
+					{{ comment.contents|striptags |length > 25 ? comment.contents|striptags |slice(0, 25)  ~ '...' : comment.contents|striptags }}</td>
+				</td>
+				<td>{{ comment.postedAt|date('d.m.Y H:i:s') }}</td>
+				<td>
+					<a href="{{ path('comment_edit' , { 'id': comment.id }) }}" class="btn btn-success">Edycja</a>
+				</td>
+				<td>
+					<a href="{{ path('comment_delete' , { 'id': comment.id }) }}" class="btn btn-danger">Usuń</a>
+				</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock %}
