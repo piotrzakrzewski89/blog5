@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Posts;
 use App\Entity\User;
 use App\Entity\Ratings;
+use App\Entity\Comments;
 use App\Form\PostsType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -83,7 +84,7 @@ class PostController extends AbstractController
      * @param Request $request
      * $return \Symfony\Component\HttpFoundation\Response
      */
-    public function edit(Request $request, $id, ImagesUploadService $imageUploadService)
+    public function editPost(Request $request, $id, ImagesUploadService $imageUploadService)
     {
         $em = $this->getDoctrine()->getManager();
         $post = $em->getRepository(Posts::class)->find($id);
@@ -94,24 +95,22 @@ class PostController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $pictureFileName = $form->get('photo_path')->getData();
-            if ($pictureFileName) {
-                try {
-                    $catalogPath = 'download/' . $this->getUser()->getId() . '/';
+            try {
+                $catalogPath = 'download/' . $this->getUser()->getId() . '/';
+                if ($pictureFileName != null) {
                     $newFileNamePhoto = $imageUploadService->uploadEditImage($pictureFileName, $oldFilePath, $catalogPath);
-
                     $post->setPhotoPath($newFileNamePhoto);
-                    $post->setModificatedAt(new \DateTime());
-                    $em->persist($post);
-                    $em->flush();
-                    $this->addFlash('success', 'Zedytowano post');
-                } catch (\Exception $e) {
-                    $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
                 }
+                $post->setModificatedAt(new \DateTime());
+                $em->persist($post);
+                $em->flush();
+                $this->addFlash('success', 'Zedytowano post');
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
             }
+
             return $this->redirectToRoute('index_post');
         }
-
-
         return $this->render('post/new.html.twig', [
             'postsForm' => $form->createView(),
             'userId' => $userId,
@@ -123,14 +122,17 @@ class PostController extends AbstractController
      * @param Request $request
      * $return \Symfony\Component\HttpFoundation\Response
      */
-    public function delete($id)
+    public function deletePost($id)
     {
         $filesystem = new Filesystem();
         try {
             $catalogPath = 'download/' . $this->getUser()->getId() . '/';
             $em = $this->getDoctrine()->getManager();
             $post = $em->getRepository(Posts::class)->find($id);
+            // $comment = $em->getRepository(Comments::class)->findBy(['post' => $post]);
             $filesystem->remove([$catalogPath . $post->getPhotoPath()]);
+            // $this->deleteEntities($em, $comment);
+            // $em->remove($comment);
             $em->remove($post);
             $em->flush();
             $this->addFlash('success', 'Usunięto post');
@@ -186,5 +188,12 @@ class PostController extends AbstractController
             $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
         }
         return $this->redirectToRoute('post_details', ['id' => $id]);
+    }
+
+    protected function deleteEntities($em, $entities)
+    {
+        foreach ($entities as $entity) {
+            $em->remove($entity);
+        }
     }
 }

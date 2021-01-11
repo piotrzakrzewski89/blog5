@@ -63,7 +63,7 @@ class Posts
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="post", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="post", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $comments;
 

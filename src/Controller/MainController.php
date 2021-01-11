@@ -58,6 +58,7 @@ class MainController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $newComment->setPostedAt(new \DateTime());
                 $newComment->setPost($post);
+                $newComment->setUser($this->getUser());
                 $em->persist($newComment);
                 $em->flush();
                 $this->addFlash('success', 'Dodano komentarz');
@@ -81,7 +82,7 @@ class MainController extends AbstractController
      */
     public function userPosts($username)
     {
-        $em = $this->getDoctrine()->getManager();        
+        $em = $this->getDoctrine()->getManager();
         $userData = $em->getRepository(User::class)->findOneBY(['username' => $username]);
         $userPosts = $em->getRepository(Posts::class)->findBY(['user' => $userData->getId()]);
 

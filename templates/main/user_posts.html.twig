@@ -16,6 +16,7 @@
 				<table class="table">
 					<thead>
 						<tr>
+							<th scope="col">#</th>
 							<th scope="col">tytuł</th>
 							<th scope="col">data</th>
 						</tr>
@@ -23,6 +24,7 @@
 					<tbody>
 						{% for post in userPosts %}
 							<tr>
+								<td>{{ loop.index }}</td>
 								<td>
 									<a href="{{ path('post_details', {'id' : post.id }) }}">{{ post.title }}<a/></td>
 								</td>
