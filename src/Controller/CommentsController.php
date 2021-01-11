@@ -9,9 +9,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommentsController extends AbstractController
 {
     /**
-     * @Route("/comments", name="comments")
+     * @Route("/user_comments/{user}", name="comments_user")
      */
-    public function index(): Response
+    public function userCommnets($user): Response
     {
         return $this->render('comments/index.html.twig', [
             'controller_name' => 'CommentsController',

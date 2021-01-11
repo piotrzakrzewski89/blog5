@@ -11,6 +11,9 @@ use App\Entity\User;
 use App\Entity\Ratings;
 use App\Form\CommentsType;
 use App\Service\SendEmialToUserService;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Session\Session;
+use App\Service\DeleteEntitiesService;
 
 class MainController extends AbstractController
 {
@@ -105,5 +108,37 @@ class MainController extends AbstractController
             $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
         }
         return $this->redirectToRoute('user_panel');
+    }
+
+    /**
+     * @Route("/user_panel/remove_account/{user}", name="remove_account") 
+     */
+    public function removeUserAccount($user, DeleteEntitiesService $deleteEntitiesService)
+    {
+        $filesystem = new Filesystem();
+        $catalogPath = 'download/' . $this->getUser()->getId() . '/';
+        $em = $this->getDoctrine()->getManager();
+        try {
+            $user = $em->getRepository(User::class)->find($user);
+            $posts = $em->getRepository(Posts::class)->findBy(['user' => $user]);
+            $comments = $em->getRepository(Comments::class)->findBy(['user' => $user]);
+            if ($this->getUser()->getId() == $user->getId()) {
+                $session = $this->get('session');
+                $session = new Session();
+                $session->invalidate();
+            }
+            foreach ($posts as $post) {
+                $filesystem->remove([$catalogPath . $post->getPhotoPath()]);
+            }
+            $deleteEntitiesService->deleteEntities($em, $comments);
+            $deleteEntitiesService->deleteEntities($em, $posts);
+
+            $em->remove($user);
+            $em->flush();
+            $this->addFlash('success', 'Usunięto konto z systemu');
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
+        }
+        return $this->redirectToRoute('app_login');
     }
 }
