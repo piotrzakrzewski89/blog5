@@ -336,12 +336,12 @@
         "version": "v2.1.0"
     },
     "symfony/phpunit-bridge": {
-        "version": "4.3",
+        "version": "5.1",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "master",
-            "version": "4.3",
-            "ref": "6d0e35f749d5f4bfe1f011762875275cd3f9874f"
+            "version": "5.1",
+            "ref": "cb82a2355ec62fef0e7028ac969fe86fa722feb8"
         },
         "files": [
             "./.env.test",
@@ -351,25 +351,25 @@
         ]
     },
     "symfony/polyfill-intl-grapheme": {
-        "version": "v1.20.0"
+        "version": "v1.22.0"
     },
     "symfony/polyfill-intl-icu": {
-        "version": "v1.20.0"
+        "version": "v1.22.0"
     },
     "symfony/polyfill-intl-idn": {
-        "version": "v1.20.0"
+        "version": "v1.22.0"
     },
     "symfony/polyfill-intl-normalizer": {
-        "version": "v1.20.0"
+        "version": "v1.22.0"
     },
     "symfony/polyfill-mbstring": {
-        "version": "v1.20.0"
+        "version": "v1.22.0"
     },
     "symfony/polyfill-php73": {
-        "version": "v1.20.0"
+        "version": "v1.22.0"
     },
     "symfony/polyfill-php80": {
-        "version": "v1.20.0"
+        "version": "v1.22.0"
     },
     "symfony/process": {
         "version": "v5.2.1"
