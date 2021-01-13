@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Comments;
+use App\Entity\User;
 use App\Form\CommentsType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 class CommentsController extends AbstractController
 {
     /**
-     * @Route("/user_comments/", name="user_comments_auth")
+     * @Route("/user_comments_auth/", name="user_comments_auth")
      */
     public function userCommnetsAuth(): Response
     {
@@ -71,16 +72,5 @@ class CommentsController extends AbstractController
         return $this->redirectToRoute('user_comments_auth');
     }
 
-    /**
-     * @Route("/user_comments/{$username}", name="user_comments")
-     */
-    public function userCommnets($username)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $commentsData = $em->getRepository(Comments::class)->findBY(['user' => $username]);
 
-        return $this->render('comments/user_comments.html.twig', [
-            'commentsData' => $commentsData,
-        ]);
-    }
 }

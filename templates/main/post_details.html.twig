@@ -48,13 +48,12 @@
 		<div class="post-preview text-center">
 			<h2>Komentarze</h2>
 			{% for comment in commentsData %}
-				<div class="post-preview">
+				<span class="meta">
 					{{ comment.contents|raw }}
 					Dodane przez
 					<a href="{{ path('user_comments', {'username' : comment.user.username }) }}">{{ comment.user.username }}</a>
 					,
-					{{ comment.postedAt|date('d.m.Y H:i:s') }}
-				</div>
+					{{ comment.postedAt|date('d.m.Y H:i:s') }}</span>
 				<hr>
 			{% endfor %}
 			{% form_theme commentForm 'bootstrap_4_layout.html.twig' %}

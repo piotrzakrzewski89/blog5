@@ -154,17 +154,4 @@ class PostController extends AbstractController
         }
         return $this->redirectToRoute('user_posts_auth');
     }
-
-    /**
-     * @Route("/user_comments/{$username}", name="user_comments")
-     */
-    public function userCommnets($username)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $commentsData = $em->getRepository(Comments::class)->findBY(['user' => $username]);
-
-        return $this->render('comments/user_comments.html.twig', [
-            'commentsData' => $commentsData,
-        ]);
-    }
 }

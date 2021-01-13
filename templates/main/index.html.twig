@@ -22,7 +22,9 @@
 				,
 				{{ post.createdAt|date('d.m.Y H:i:s') }}<br>
 				Komentarze:
-				{{ post.comments|length }}
+				{{ post.comments|length }}, 
+				Średnia ocen:
+				{{ avgRatings }}
 			</p>
 		</div>
 		<hr>
