@@ -25,7 +25,7 @@ class SendEmialToUserService
             'app_verify_email',
             $user,
             (new TemplatedEmail())
-                ->from(new Address('piotrzakrzewski@piotrzakrzewski89.pl', 'Piotr Zakrzewski'))
+                ->from(new Address('piotrzakrzewski@piotrzakrzewski89.pl', 'no-reply'))
                 ->to($user->getEmail())
                 ->subject('Weryfikacja Emaila oraz aktywacja konta Blog5')
                 ->htmlTemplate('registration/confirmation_email.html.twig')
