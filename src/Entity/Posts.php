@@ -68,7 +68,7 @@ class Posts
     private $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity=Ratings::class, mappedBy="post", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Ratings::class, mappedBy="post", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $ratings;
 

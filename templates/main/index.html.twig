@@ -23,8 +23,13 @@
 				{{ post.createdAt|date('d.m.Y H:i:s') }}<br>
 				Komentarze:
 				{{ post.comments|length }}, 
-				Średnia ocen:
-				{{ avgRatings }}
+								Oceny:
+				{% for rating in ratingsData %}
+					{% if post.id == rating.post.id %}
+						<em style='color:green;'>{{ rating.positive}}</em>
+						<em style='color:red;'>{{rating.negative}}</em>
+					{% endif %}
+				{% endfor %}
 			</p>
 		</div>
 		<hr>

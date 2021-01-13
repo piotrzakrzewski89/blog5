@@ -24,19 +24,11 @@ class MainController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
         $postsData = $em->getRepository(Posts::class)->findBY(['is_public' => true]);
-        $ratingsData = $em->getRepository(Ratings::class)->findOneBy(['post' => $postsData]);
-        if ($ratingsData) {
-            if ($ratingsData->getPositive() == 0 && $ratingsData->getNegative() == 0) {
-                $avgRatings = 0;
-            } else {
-                $avgRatings = ($ratingsData->getPositive() - $ratingsData->getNegative()) / 2;
-            }
-        } else {
-            $avgRatings = 0;
-        }
+        $ratingsData = $em->getRepository(Ratings::class)->findBy(['post' => $postsData]);
+
         return $this->render('main/index.html.twig', [
             'postsData' => $postsData,
-            'avgRatings' => $avgRatings,
+            'ratingsData' => $ratingsData,
         ]);
     }
 
