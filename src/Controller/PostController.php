@@ -41,6 +41,7 @@ class PostController extends AbstractController
         $newPosts = new Posts();
         $newRatings = new Ratings();
         $form = $this->createForm(PostsType::class, $newPosts);
+        $userId = $this->getUser()->getId();
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -67,12 +68,13 @@ class PostController extends AbstractController
                     $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
                 }
 
-                return $this->redirectToRoute('index_post');
+                return $this->redirectToRoute('user_posts_auth');
             }
         }
 
         return $this->render('post/new.html.twig', [
             'postsForm' => $form->createView(),
+            'userId' => $userId,
         ]);
     }
 
