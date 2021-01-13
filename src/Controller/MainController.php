@@ -26,7 +26,11 @@ class MainController extends AbstractController
         $postsData = $em->getRepository(Posts::class)->findBY(['is_public' => true]);
         $ratingsData = $em->getRepository(Ratings::class)->findOneBy(['post' => $postsData]);
         if ($ratingsData) {
-            $avgRatings = ($ratingsData->getPositive() - $ratingsData->getNegative()) / 2;
+            if ($ratingsData->getPositive() == 0 && $ratingsData->getNegative() == 0) {
+                $avgRatings = 0;
+            } else {
+                $avgRatings = ($ratingsData->getPositive() - $ratingsData->getNegative()) / 2;
+            }
         } else {
             $avgRatings = 0;
         }
