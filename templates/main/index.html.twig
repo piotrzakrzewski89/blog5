@@ -14,7 +14,7 @@
 					{{ post.title}}
 				</h2>
 				<h3 class="post-subtitle">
-					{{ post.contents|striptags |length > 50 ? post.contents|striptags |slice(0, 50)  ~ '...' : post.contents|striptags }}
+					{{ post.contents|striptags |length > 75 ? post.contents|striptags |slice(0, 75)  ~ '...' : post.contents|striptags }}
 				</h3>
 			</a>
 			<p class="post-meta">Zamieszczone przez
