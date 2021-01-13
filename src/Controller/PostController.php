@@ -133,7 +133,7 @@ class PostController extends AbstractController
         } catch (\Exception $e) {
             $this->addFlash('error', 'Wystąpił nieoczekiwany błąd podczas usuwania');
         }
-        return $this->redirectToRoute('index_post');
+        return $this->redirectToRoute('user_posts_auth');
     }
 
     /**
@@ -152,6 +152,19 @@ class PostController extends AbstractController
         } catch (\Exception $e) {
             $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
         }
-        return $this->redirectToRoute('index_post');
+        return $this->redirectToRoute('user_posts_auth');
+    }
+
+    /**
+     * @Route("/user_comments/{$username}", name="user_comments")
+     */
+    public function userCommnets($username)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $commentsData = $em->getRepository(Comments::class)->findBY(['user' => $username]);
+
+        return $this->render('comments/user_comments.html.twig', [
+            'commentsData' => $commentsData,
+        ]);
     }
 }

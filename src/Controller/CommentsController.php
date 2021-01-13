@@ -14,7 +14,7 @@ class CommentsController extends AbstractController
     /**
      * @Route("/user_comments/", name="user_comments_auth")
      */
-    public function userCommnets(): Response
+    public function userCommnetsAuth(): Response
     {
         $em = $this->getDoctrine()->getManager();
         $commentsData = $em->getRepository(Comments::class)->findBY(['user' => $this->getUser()]);
@@ -69,5 +69,18 @@ class CommentsController extends AbstractController
             $this->addFlash('error', 'Wystąpił nieoczekiwany błąd podczas usuwania');
         }
         return $this->redirectToRoute('user_comments_auth');
+    }
+
+    /**
+     * @Route("/user_comments/{$username}", name="user_comments")
+     */
+    public function userCommnets($username)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $commentsData = $em->getRepository(Comments::class)->findBY(['user' => $username]);
+
+        return $this->render('comments/user_comments.html.twig', [
+            'commentsData' => $commentsData,
+        ]);
     }
 }
