@@ -71,6 +71,4 @@ class CommentsController extends AbstractController
         }
         return $this->redirectToRoute('user_comments_auth');
     }
-
-
 }

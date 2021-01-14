@@ -23,7 +23,6 @@
 				{{ post.createdAt|date('d.m.Y H:i:s') }}<br>
 				Komentarze:
 				{{ post.comments|length }},
-
 				{% set sumPositive = 0 %}
 				{% set sumNegative = 0 %}
 				{% for rating in ratingsData %}
@@ -35,7 +34,6 @@
 				Oceny:
 				<em style='color:green;'>{{ sumPositive }}</em>
 				<em style='color:red;'>{{ sumNegative }}</em>
-
 			</p>
 		</div>
 		<hr>
