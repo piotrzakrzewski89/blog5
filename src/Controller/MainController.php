@@ -52,7 +52,7 @@ class MainController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
         $post = $em->getRepository(Posts::class)->findOneBY(['id' => $id]);
-        $ratingsData = $em->getRepository(Ratings::class)->findOneBY(['post' => $post]);
+        $ratingsData = $em->getRepository(Ratings::class)->findBY(['post' => $post]);
         $commentsData = $em->getRepository(Comments::class)->findBY(['post' => $post]);
 
         $form = $this->createForm(CommentsType::class, $newComment);

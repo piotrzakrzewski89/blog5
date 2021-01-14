@@ -22,14 +22,20 @@
 				,
 				{{ post.createdAt|date('d.m.Y H:i:s') }}<br>
 				Komentarze:
-				{{ post.comments|length }}, 
-				Oceny:
+				{{ post.comments|length }},
+
+				{% set sumPositive = 0 %}
+				{% set sumNegative = 0 %}
 				{% for rating in ratingsData %}
-					{% if post.id == rating.post.id  %}					
-						<em style='color:green;'>{{ rating.positive}}</em>
-						<em style='color:red;'>{{rating.negative}}</em>
+					{% if post.id == rating.post.id  %}
+						{% set sumPositive = sumPositive + rating.positive %}
+						{% set sumNegative = sumNegative + rating.negative %}
 					{% endif %}
 				{% endfor %}
+				Oceny:
+				<em style='color:green;'>{{ sumPositive }}</em>
+				<em style='color:red;'>{{ sumNegative }}</em>
+
 			</p>
 		</div>
 		<hr>
