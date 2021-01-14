@@ -65,19 +65,20 @@ class User implements UserInterface
     private $posts;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $has_voted;
-
-    /**
      * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="user", orphanRemoval=true)
      */
     private $comments;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Ratings::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $ratings;
 
     public function __construct()
     {
         $this->posts = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->ratings = new ArrayCollection();
     }
 
 
@@ -232,18 +233,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getHasVoted(): ?bool
-    {
-        return $this->has_voted;
-    }
-
-    public function setHasVoted(bool $has_voted): self
-    {
-        $this->has_voted = $has_voted;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Comments[]
      */
@@ -268,6 +257,36 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($comment->getUser() === $this) {
                 $comment->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Ratings[]
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    public function addRating(Ratings $rating): self
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings[] = $rating;
+            $rating->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRating(Ratings $rating): self
+    {
+        if ($this->ratings->removeElement($rating)) {
+            // set the owning side to null (unless already changed)
+            if ($rating->getUser() === $this) {
+                $rating->setUser(null);
             }
         }
 

@@ -41,8 +41,8 @@
 	{% else %}
 		<div class="post-preview text-center">
 			<h2>Oceny</h2>
-			<button style='color:green;font-size:40px' onclick="window.location.href='{{ path('post_vote' , { 'id': post.id , 'type' : 'p', 'value' : '1'}) }}'">{{ ratingsData.positive }}<img src="{{ asset('assets/vendor/jumpicon/iconfinder-thumb-up.png')}}"></button>
-			<button style='color:red;font-size:40px' onclick="window.location.href='{{ path('post_vote' , { 'id': post.id , 'type' : 'n', 'value' : '1'}) }}'">{{ ratingsData.negative }}<img src="{{ asset('assets/vendor/jumpicon/iconfinder-thumb-down.png')}}"></button>
+			<button style='color:green;font-size:40px' onclick="window.location.href='{{ path('post_vote' , { 'id': post.id , 'type' : 'p', 'value' : '1'}) }}'">{{  ratingsData == null ? '0' : ratingsData.positive }}<img src="{{ asset('assets/vendor/jumpicon/iconfinder-thumb-up.png')}}"></button>
+			<button style='color:red;font-size:40px' onclick="window.location.href='{{ path('post_vote' , { 'id': post.id , 'type' : 'n', 'value' : '1'}) }}'">{{  ratingsData == null ? '0' : ratingsData.negative }}<img src="{{ asset('assets/vendor/jumpicon/iconfinder-thumb-down.png')}}"></button>
 		</div>
 		<hr>
 		<div class="post-preview text-center">

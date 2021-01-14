@@ -20,7 +20,7 @@ class Ratings
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $Positive;
+    private $positive;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -33,6 +33,12 @@ class Ratings
      */
     private $post;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="ratings")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
 
     public function getId(): ?int
     {
@@ -41,12 +47,12 @@ class Ratings
 
     public function getPositive(): ?int
     {
-        return $this->Positive;
+        return $this->positive;
     }
 
-    public function setPositive(?int $Positive): self
+    public function setPositive(?int $positive): self
     {
-        $this->Positive = $Positive;
+        $this->positive = $positive;
 
         return $this;
     }
@@ -71,6 +77,18 @@ class Ratings
     public function setPost(?Posts $post): self
     {
         $this->post = $post;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

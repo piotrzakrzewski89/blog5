@@ -23,9 +23,9 @@
 				{{ post.createdAt|date('d.m.Y H:i:s') }}<br>
 				Komentarze:
 				{{ post.comments|length }}, 
-								Oceny:
+				Oceny:
 				{% for rating in ratingsData %}
-					{% if post.id == rating.post.id %}
+					{% if post.id == rating.post.id  %}					
 						<em style='color:green;'>{{ rating.positive}}</em>
 						<em style='color:red;'>{{rating.negative}}</em>
 					{% endif %}

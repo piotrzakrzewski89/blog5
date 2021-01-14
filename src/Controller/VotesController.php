@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Posts;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\User;
 use App\Entity\Ratings;
 
 class VotesController extends AbstractController
@@ -15,26 +15,34 @@ class VotesController extends AbstractController
      */
     public function vote($id, $type, $value)
     {
-        try {
-            $em = $this->getDoctrine()->getManager();
-            $rating = $em->getRepository(Ratings::class)->findOneBy(['post' => $id]);
-            $user = $em->getRepository(User::class)->findOneBy(['id' =>  $this->getUser()]);
-            if ($type == 'p') {
-                $rating->setPositive($rating->getPositive() + $value);
-            } elseif ($type == 'n') {
-                $rating->setNegative($rating->getNegative() + $value);
-            }
-            if ($user->getHasVoted() == true) {
-                $this->addFlash('error', 'Zagłosowano już');
-            } else {
-                $user->setHasVoted(true);
-                $em->persist($user);
-                $em->persist($rating);
+        $newRating = new Ratings();
+        $em = $this->getDoctrine()->getManager();
+        $checkUserVote = $em->getRepository(Ratings::class)->findBy(['user' =>  $this->getUser(), 'post' => $id]);
+
+        if (empty($checkUserVote)) {
+            try {
+
+                $post = $em->getRepository(Posts::class)->findOneBy(['id' => $id]);
+                if ($type == 'p') {
+                    $newRating->setPositive($value);
+                    $newRating->setNegative(0);
+                    $newRating->setPost($post);
+                    $newRating->setUser($this->getUser());
+                } elseif ($type == 'n') {
+                    $newRating->setPositive(0);
+                    $newRating->setNegative($value);
+                    $newRating->setPost($post);
+                    $newRating->setUser($this->getUser());
+                }
+                $em->persist($newRating);
                 $em->flush();
+
                 $this->addFlash('success', 'Zagłosowano');
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
             }
-        } catch (\Exception $e) {
-            $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
+        } else {
+            $this->addFlash('error', 'Oddano już głos w tym poście !');
         }
         return $this->redirectToRoute('post_details', ['id' => $id]);
     }

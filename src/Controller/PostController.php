@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Posts;
-use App\Entity\Ratings;
 use App\Form\PostsType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -39,7 +38,6 @@ class PostController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $newPosts = new Posts();
-        $newRatings = new Ratings();
         $form = $this->createForm(PostsType::class, $newPosts);
         $userId = $this->getUser()->getId();
 
@@ -57,10 +55,6 @@ class PostController extends AbstractController
                     $newPosts->setUser($this->getUser());
                     $newPosts->setIsPublic(0);
                     $newPosts->setCreatedAt(new \DateTime());
-                    $newRatings->setPositive(0);
-                    $newRatings->setNegative(0);
-                    $newRatings->setPost($newPosts);
-                    $em->persist($newRatings);
                     $em->persist($newPosts);
                     $em->flush();
                     $this->addFlash('success', 'Dodano Post');

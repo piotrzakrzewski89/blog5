@@ -23,7 +23,7 @@ class MainController extends AbstractController
     public function index()
     {
         $em = $this->getDoctrine()->getManager();
-        $postsData = $em->getRepository(Posts::class)->findBY(['is_public' => true], ['created_at' => 'ASC']);
+        $postsData = $em->getRepository(Posts::class)->findBY(['is_public' => true], ['created_at' => 'DESC']);
         $ratingsData = $em->getRepository(Ratings::class)->findBy(['post' => $postsData]);
 
         return $this->render('main/index.html.twig', [
