@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ parent() }} Szczegóły {{ userData.username }}
+{% endblock %}
+
+{% block body %}
+<h1>Szczegóły użytkownika: {{ userData.username }}</h1><br>
+
+{% set sumPositive = 0 %}
+{% set sumNegative = 0 %}
+{% for rating in userRatings %}
+	{% set sumPositive = sumPositive + rating.positive %}
+	{% set sumNegative = sumNegative + rating.negative %}
+{% endfor %}
+<h1>Oddanych głosów <em style='color:green;'>{{ sumPositive }}</em> <em style='color:red;'>{{ sumNegative }}</em> </h1><br>
+
+<h1>Lista postów</h1>
+<table class="table">
+	<thead>
+		<tr>
+			<th scope="col">#</th>
+			<th scope="col">tytuł</th>
+			<th scope="col">data</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for post in userPosts %}
+			<tr>
+				<td>{{ loop.index }}</td>
+				<td>
+					<a href="{{ path('post_details', {'id' : post.id }) }}">{{ post.title }}<a/></td>
+				</td>
+				<td>{{ post.createdAt|date('d.m.Y H:i:s') }}
+				</td>
+			</tr>
+		</td>
+	</tbody>
+</tr>{% endfor %}</tbody></table><br>
+
+<h1>Lista komentarzy</h1>
+<table class="table">
+	<thead>
+		<tr>
+			<th scope="col">#</th>
+			<th scope="col">tytuł posta</th>
+			<th scope="col">komentarz</th>
+			<th scope="col">data</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for comment in userComments %}
+			<tr>
+				<td>{{ loop.index }}</td>
+				<td>
+					<a href="{{ path('post_details', {'id' : comment.post.id }) }}">{{ comment.post.title }}<a/></td>
+				</td>
+				<td>
+					{{ comment.contents|striptags |length > 25 ? comment.contents|striptags |slice(0, 25)  ~ '...' : comment.contents|striptags }}</td>
+				</td>
+				<td>{{ comment.postedAt|date('d.m.Y H:i:s') }}</td>
+	</tbody>
+	{% endfor %}
+</table><br>
+
+
+{% endblock %}

@@ -14,6 +14,7 @@ use App\Service\SendEmialToUserService;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Session\Session;
 use App\Service\DeleteEntitiesService;
+use Symfony\Component\HttpFoundation\Response;
 
 class MainController extends AbstractController
 {
@@ -83,32 +84,42 @@ class MainController extends AbstractController
     }
 
     /**
-     * @Route("/user_posts/{username}", name="user_posts")
+     * @Route("/user_details/{username}", name="user_details")
      */
-    public function userPosts($username)
+    public function userDetails($username)
     {
         $em = $this->getDoctrine()->getManager();
         $userData = $em->getRepository(User::class)->findOneBY(['username' => $username]);
         $userPosts = $em->getRepository(Posts::class)->findBY(['user' => $userData->getId(), 'is_public' => true]);
+        $userComments = $em->getRepository(Comments::class)->findBY(['user' => $userData->getId()]);
+        $userRatings = $em->getRepository(Ratings::class)->findBY(['user' => $userData->getId()]);
 
-        return $this->render('main/user_posts.html.twig', [
+        return $this->render('main/user_comments_posts_details.html.twig', [
             'userPosts' => $userPosts,
             'userData' => $userData,
+            'userComments' =>  $userComments,
+            'userRatings' =>  $userRatings,
         ]);
     }
 
     /**
-     * @Route("/user_comments/{username}", name="user_comments")
+     * @Route("/user_details_auth/", name="user_details_auth")
      */
-    public function userComments($username)
+    public function userDetailsAuth(): Response
     {
-        $em = $this->getDoctrine()->getManager();
-        $userData = $em->getRepository(User::class)->findOneBY(['username' => $username]);
-        $userComments = $em->getRepository(Comments::class)->findBY(['user' => $userData->getId()]);
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        return $this->render('comments/user_comments.html.twig', [
-            'userComments' => $userComments,
+        $em = $this->getDoctrine()->getManager();
+        $userData = $em->getRepository(User::class)->findOneBY(['id' => $this->getUser()]);
+        $userPosts = $em->getRepository(Posts::class)->findBY(['user' => $userData->getId()]);
+        $userComments = $em->getRepository(Comments::class)->findBY(['user' => $userData->getId()]);
+        $userRatings = $em->getRepository(Ratings::class)->findBY(['user' => $userData->getId()]);
+
+        return $this->render('main/user_comments_posts_details_auth.html.twig', [
+            'userPosts' => $userPosts,
             'userData' => $userData,
+            'userComments' =>  $userComments,
+            'userRatings' =>  $userRatings,
         ]);
     }
 

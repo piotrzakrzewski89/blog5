@@ -3,27 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Comments;
-use App\Entity\User;
 use App\Form\CommentsType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
 class CommentsController extends AbstractController
 {
-    /**
-     * @Route("/user_comments_auth/", name="user_comments_auth")
-     */
-    public function userCommnetsAuth(): Response
-    {
-        $em = $this->getDoctrine()->getManager();
-        $commentsData = $em->getRepository(Comments::class)->findBY(['user' => $this->getUser()]);
-
-        return $this->render('comments/user_comments_auth.html.twig', [
-            'commentsData' => $commentsData,
-        ]);
-    }
 
     /**
      * @Route("/user_comments/edit/{id}", name="comment_edit")
@@ -46,7 +32,7 @@ class CommentsController extends AbstractController
                 $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
             }
 
-            return $this->redirectToRoute('user_comments_auth');
+            return $this->redirectToRoute('user_details_auth');
         }
         return $this->render('comments/user_comments_edit.html.twig', [
             'commentForm' => $form->createView(),
@@ -69,6 +55,6 @@ class CommentsController extends AbstractController
         } catch (\Exception $e) {
             $this->addFlash('error', 'Wystąpił nieoczekiwany błąd podczas usuwania');
         }
-        return $this->redirectToRoute('user_comments_auth');
+        return $this->redirectToRoute('user_details_auth');
     }
 }

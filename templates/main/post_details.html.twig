@@ -15,7 +15,7 @@
 					<div class="post-heading">
 						<h1>{{ post.title }}</h1>
 						<span class="meta">Zamieszczone przez
-							<a href="{{ path('user_posts', {'username' : post.user.username }) }}">{{ post.user.username }}</a>
+							<a href="{{ path('user_details', {'username' : post.user.username }) }}">{{ post.user.username }}</a>
 							{{ post.createdAt|date('d.m.Y H:i:s') }}</span>
 					</div>
 				</div>
@@ -57,7 +57,7 @@
 				<span class="meta">
 					{{ comment.contents|raw }}
 					Dodane przez
-					<a href="{{ path('user_comments', {'username' : comment.user.username }) }}">{{ comment.user.username }}</a>
+					<a href="{{ path('user_details', {'username' : comment.user.username }) }}">{{ comment.user.username }}</a>
 					,
 					{{ comment.postedAt|date('d.m.Y H:i:s') }}</span>
 				<hr>

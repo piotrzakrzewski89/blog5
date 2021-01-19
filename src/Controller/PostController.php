@@ -13,22 +13,6 @@ use App\Service\ImagesUploadService;
 class PostController extends AbstractController
 {
     /**
-     * @Route("/post", name="user_posts_auth")
-     */
-    public function index()
-    {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
-        $em = $this->getDoctrine()->getManager();
-        $postsData = $em->getRepository(Posts::class)->findBY(['user' => $this->getUser()]);
-
-        return $this->render('post/user_posts_auth.html.twig', [
-            'postsData' => $postsData,
-
-        ]);
-    }
-
-    /**
      * @Route("/new_post", name="add_new_post")
      * @param Request $request
      * $return \Symfony\Component\HttpFoundation\Response
@@ -102,7 +86,7 @@ class PostController extends AbstractController
                 $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
             }
 
-            return $this->redirectToRoute('user_posts_auth');
+            return $this->redirectToRoute('user_details_auth');
         }
         return $this->render('post/new.html.twig', [
             'postsForm' => $form->createView(),
@@ -129,7 +113,7 @@ class PostController extends AbstractController
         } catch (\Exception $e) {
             $this->addFlash('error', 'Wystąpił nieoczekiwany błąd podczas usuwania');
         }
-        return $this->redirectToRoute('user_posts_auth');
+        return $this->redirectToRoute('user_details_auth');
     }
 
     /**
@@ -148,6 +132,6 @@ class PostController extends AbstractController
         } catch (\Exception $e) {
             $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
         }
-        return $this->redirectToRoute('user_posts_auth');
+        return $this->redirectToRoute('user_details_auth');
     }
 }

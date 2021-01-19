@@ -18,7 +18,7 @@
 				</h3>
 			</a>
 			<p class="post-meta">Zamieszczone przez
-				<a href="{{ path('user_posts', {'username' : post.user.username }) }}">{{ post.user.username }}</a>
+				<a href="{{ path('user_details', {'username' : post.user.username }) }}">{{ post.user.username }}</a>
 				,
 				{{ post.createdAt|date('d.m.Y H:i:s') }}<br>
 				Komentarze:

@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ parent() }} Konto {{ userData.username }}
+{% endblock %}
+
+{% block body %}
+
+{% set sumPositive = 0 %}
+{% set sumNegative = 0 %}
+{% for rating in userRatings %}
+	{% set sumPositive = sumPositive + rating.positive %}
+	{% set sumNegative = sumNegative + rating.negative %}
+{% endfor %}
+<h1>Oddanych głosów <em style='color:green;'>{{ sumPositive }}</em> <em style='color:red;'>{{ sumNegative }}</em> </h1><br>
+
+<h1>Lista postów</h1>
+<table class="table">
+	<thead>
+		<tr>
+			<th scope="col">#</th>
+			<th scope="col">tytuł</th>
+			<th style='width: 20px'></th>
+			<th style='width: 20px'></th>
+			<th style='width: 15px'></th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for post in userPosts %}
+			<tr>
+				<td>{{ loop.index }}</td>
+				<td>
+					<a href="{{ path('post_details', {'id' : post.id }) }}">{{ post.title }}<a/></td>
+				</td>
+				<td>
+					<a href="{{ path('post_edit' , { 'id': post.id }) }}" class="btn btn-success">Edycja</a>
+				</td>
+				<td>
+					<a href="{{ path('post_delete' , { 'id': post.id }) }}" class="btn btn-danger">Usuń</a>
+				</td>
+				<td>
+					{% if post.isPublic == '1' %}
+						<input type="checkbox" checked data-toggle="toggle" data-onstyle="outline-success" data-offstyle="outline-danger" onchange="window.location.href='{{ path('post_set_visibility' , { 'id': post.id , 'visibility' : '0'}) }}'"></td>
+				{% else %}
+					<input type="checkbox" data-toggle="toggle" data-onstyle="outline-success" data-offstyle="outline-danger" onchange="window.location.href='{{ path('post_set_visibility' , { 'id': post.id , 'visibility' : '1'}) }}'"></td>
+				{% endif %}
+				</td>	
+			</tr>
+		{% endfor %}
+	</tbody>
+</table><br>
+
+<h1>Lista komentarzy</h1>
+<table class="table">
+	<thead>
+		<tr>
+			<th scope="col">#</th>
+			<th scope="col">tytuł posta</th>
+			<th scope="col">komentarz</th>
+			<th scope="col">data</th>
+			<th style='width: 20px'></th>
+			<th style='width: 20px'></th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for comment in userComments %}
+			<tr>
+				<td>{{ loop.index }}</td>
+				<td>
+					<a href="{{ path('post_details', {'id' : comment.post.id }) }}">{{ comment.post.title }}<a/></td>
+				</td>
+				<td>
+					{{ comment.contents|striptags |length > 25 ? comment.contents|striptags |slice(0, 25)  ~ '...' : comment.contents|striptags }}</td>
+				</td>
+				<td>{{ comment.postedAt|date('d.m.Y H:i:s') }}</td>
+				<td>
+					<a href="{{ path('comment_edit' , { 'id': comment.id }) }}" class="btn btn-success">Edycja</a>
+				</td>
+				<td>
+					<a href="{{ path('comment_delete' , { 'id': comment.id }) }}" class="btn btn-danger">Usuń</a>
+				</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table><br>
+
+
+{% endblock %}
