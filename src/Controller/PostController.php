@@ -46,7 +46,7 @@ class PostController extends AbstractController
                     $this->addFlash('error', 'Wystąpił nieoczekiwany błąd');
                 }
 
-                return $this->redirectToRoute('user_posts_auth');
+                return $this->redirectToRoute('user_details_auth');
             }
         }
 
